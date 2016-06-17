@@ -1,0 +1,3 @@
+#define RAILNET_EXPECTED_FILE_VERSION 0
+// note: we can use cmakedefine for this...
+
