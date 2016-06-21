@@ -78,7 +78,7 @@ options::options(int argc, char** argv)
 
 void options::usage()
 {
-	std::cerr << "usage: railnet <options>" << std::endl;
+	std::cerr << "usage: railnet2dot <options>" << std::endl;
 	std::cerr << "options:" << std::endl;
 	std::cerr << "\t-h, --help\t\tprint help and exit" << std::endl;
 	std::cerr << "\t-v, --version\t\tprint version and exit" << std::endl;

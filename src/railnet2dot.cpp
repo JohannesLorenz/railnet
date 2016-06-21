@@ -17,6 +17,8 @@
 /* Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110, USA  */
 /*************************************************************************/
 
+/** @file railnet2dot.cpp main file of the railnet to dot converter */
+
 #include <map>
 #include <iostream>
 
@@ -28,7 +30,7 @@ void print_version()
 {
 	std::cerr << "version: <not specified yet>" << std::endl;
 	std::cerr << "railnet file version: "
-                << comm::RailnetFileInfo::_version << std::endl;
+		<< comm::RailnetFileInfo::_version << std::endl;
 }
 
 void print_help()
@@ -60,8 +62,8 @@ LblConvT lbl_conv;
 
 template<class Itr>
 void print_stations(Itr begin, Itr end, print_direction_t pd,
-        const std::map<CargoLabelT, comm::CargoInfo>& cargo,
-        const std::map<StationID, comm::StationInfo>& stations,
+	const std::map<CargoLabelT, comm::CargoInfo>& cargo,
+	const std::map<StationID, comm::StationInfo>& stations,
 	const std::vector<std::pair<StationID, bool>>& cur_stations,
 	UnitID unit_number,
 	float& hue, float& value,
@@ -111,13 +113,13 @@ void print_stations(Itr begin, Itr end, print_direction_t pd,
 		{
 			std::cout << ", label=\"";
 			bool first = true;
-                        for(const std::pair<const CargoLabel, comm::CargoInfo>& id : cargo)
+			for(const std::pair<const CargoLabel, comm::CargoInfo>& id : cargo)
 			if(((id.second.fwd && !id.second.rev) && (pd == pdt_fwd)) ||
 				((!id.second.fwd && id.second.rev) && (pd == pdt_bwd)) ||
 				((id.second.fwd && id.second.rev) && (pd == pdt_both)) )
 			{
 				std::cout << (first ? "" : ", ")
-                                        << lbl_conv.Convert(id.first);
+					<< lbl_conv.Convert(id.first);
 				first = false;
 			}
 			std::cout << "\"";

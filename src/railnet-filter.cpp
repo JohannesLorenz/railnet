@@ -17,7 +17,7 @@
 /* Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110, USA  */
 /*************************************************************************/
 
-/** @file railnet.cpp Implementation of the railnet converter */
+/** @file railnet-filter.cpp main file of the railnet filter */
 
 #include <cstring>
 #include <map>

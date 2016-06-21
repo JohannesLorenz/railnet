@@ -8,9 +8,11 @@ include_directories("${RAILNET_INC_DIR}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DEXPORTER")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lm")
 add_executable(railnet-filter railnet-filter.cpp
-	railnet-filter_options.cpp "${RAILNET_INC_DIR}/common.cpp")
+	railnet-filter_options.cpp "${RAILNET_INC_DIR}/common.cpp"
+	"${RAILNET_INC_DIR}/json_static.cpp")
 add_executable(railnet2dot railnet2dot.cpp railnet2dot_options.cpp
-	"${RAILNET_INC_DIR}/common.cpp")
+	"${RAILNET_INC_DIR}/common.cpp"
+	"${RAILNET_INC_DIR}/json_static.cpp")
 
 # target_link_libraries(test_seq ringbuffer)
 
