@@ -28,7 +28,7 @@ void print_version()
 {
 	std::cerr << "version: <not specified yet>" << std::endl;
 	std::cerr << "railnet file version: "
-		<< comm::railnet_file_info::_version << std::endl;
+                << comm::RailnetFileInfo::_version << std::endl;
 }
 
 void print_help()
@@ -56,12 +56,12 @@ enum station_flag_t
 	st_passed = 2
 };
 
-lbl_conv_t lbl_conv;
+LblConvT lbl_conv;
 
 template<class Itr>
 void print_stations(Itr begin, Itr end, print_direction_t pd,
-	const std::map<cargo_label_t, comm::cargo_info>& cargo,
-	const std::map<StationID, comm::station_info>& stations,
+        const std::map<CargoLabelT, comm::CargoInfo>& cargo,
+        const std::map<StationID, comm::StationInfo>& stations,
 	const std::vector<std::pair<StationID, bool>>& cur_stations,
 	UnitID unit_number,
 	float& hue, float& value,
@@ -111,13 +111,13 @@ void print_stations(Itr begin, Itr end, print_direction_t pd,
 		{
 			std::cout << ", label=\"";
 			bool first = true;
-			for(const std::pair<const CargoLabel, comm::cargo_info>& id : cargo)
+                        for(const std::pair<const CargoLabel, comm::CargoInfo>& id : cargo)
 			if(((id.second.fwd && !id.second.rev) && (pd == pdt_fwd)) ||
 				((!id.second.fwd && id.second.rev) && (pd == pdt_bwd)) ||
 				((id.second.fwd && id.second.rev) && (pd == pdt_both)) )
 			{
 				std::cout << (first ? "" : ", ")
-					<< lbl_conv.convert(id.first);
+                                        << lbl_conv.Convert(id.first);
 				first = false;
 			}
 			std::cout << "\"";
@@ -193,8 +193,8 @@ void print_stations(Itr begin, Itr end, print_direction_t pd,
 
 bool draw(const options& opt)
 {
-	comm::railnet_file_info file;
-	comm::json_ifile(std::cin) >> file;
+        comm::RailnetFileInfo file;
+        comm::RailnetIfile(std::cin) >> file;
 
 	std::map<StationID, int> station_flags;
 	const float passed_offset_x = 0.2, passed_offset_y = 0.2;
@@ -203,12 +203,12 @@ bool draw(const options& opt)
 		find out which stations are actually being used...
 	*/
 	// only set flags
-	for(std::list<comm::order_list>::const_iterator itr =
+        for(std::list<comm::OrderList>::const_iterator itr =
 		file.order_lists.get().begin();
 		itr != file.order_lists.get().end(); ++itr)
 	if(itr->stations.get().size())
 	{
-		const comm::order_list& ol = *itr;
+                const comm::OrderList& ol = *itr;
 		for(std::vector<std::pair<StationID, bool> >::const_iterator
 				itr = ol.stations.get().begin();
 				itr != ol.stations.get().end(); ++itr)
@@ -218,12 +218,12 @@ bool draw(const options& opt)
 	}
 
 	// this is required for the drawing algorithm
-	for(std::list<comm::order_list>::const_iterator itr3 =
+        for(std::list<comm::OrderList>::const_iterator itr3 =
 		file.order_lists.get().begin();
 		itr3 != file.order_lists.get().end(); ++itr3)
 	{
 		// all in all, the whole for loop will not affect the order
-		comm::order_list& ol = const_cast<comm::order_list&>(*itr3);
+                comm::OrderList& ol = const_cast<comm::OrderList&>(*itr3);
 		ol.stations.get().push_back(ol.stations.get().front());
 	}
 
@@ -272,13 +272,13 @@ bool draw(const options& opt)
 	/*
 		draw edges
 	*/
-	for(std::list<comm::order_list>::const_iterator itr3 =
+        for(std::list<comm::OrderList>::const_iterator itr3 =
 		file.order_lists.get().begin();
 		itr3 != file.order_lists.get().end(); ++itr3)
 	if(itr3->stations.get().size())
 	{
 		bool has_fwd = false, has_bwd = false, has_double = false;
-		for(std::map<cargo_label_t, comm::cargo_info>::const_iterator itr4 = itr3->cargo().begin();
+                for(std::map<CargoLabelT, comm::CargoInfo>::const_iterator itr4 = itr3->cargo().begin();
 			itr4 != itr3->cargo().end(); ++itr4)
 		{
 			has_fwd = has_fwd || (itr4->second.fwd && !itr4->second.rev);

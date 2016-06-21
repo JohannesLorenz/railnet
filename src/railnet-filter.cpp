@@ -33,14 +33,14 @@
 #include "railnet_node_list.h"
 #include "railnet-filter_options.h"
 
-static_assert(comm::railnet_file_info::_version == RAILNET_EXPECTED_FILE_VERSION,
+static_assert(comm::RailnetFileInfo::_version == RAILNET_EXPECTED_FILE_VERSION,
 	"Version mismatch: Your OpenTTD is too new/too old for this railnet version");
 
 void print_version()
 {
 	std::cerr << "version: <not specified yet>" << std::endl;
 	std::cerr << "railnet file version: "
-		<< comm::railnet_file_info::_version << std::endl;
+		<< comm::RailnetFileInfo::_version << std::endl;
 }
 
 void print_help()
@@ -50,14 +50,14 @@ void print_help()
 	options::usage();
 }
 
-lbl_conv_t lbl_conv;
+LblConvT lbl_conv;
 
 //! main routine of the railnet converter
 int run(const options& opt)
 {
-	comm::railnet_file_info file;
+	comm::RailnetFileInfo file;
 //	deserialize(file, std::cin);
-	comm::json_ifile(std::cin) >> file;
+	comm::RailnetIfile(std::cin) >> file;
 //	comm::json_ofile(std::cout) << file; // <- debugging only
 
 	/*
@@ -65,12 +65,12 @@ int run(const options& opt)
 	*/
 	std::set<int> cargo_ids;
 
-	std::map<unsigned char, cargo_label_t>::iterator itr, nextc;
+	std::map<unsigned char, CargoLabelT>::iterator itr, nextc;
 	for(itr = nextc = file.cargo_names().begin(); itr != file.cargo_names().end(); itr = nextc)
 	{
 		++nextc;
-		const cargo_label_t& clbl = itr->second;
-		const char* str = lbl_conv.convert(clbl);
+		const CargoLabelT& clbl = itr->second;
+		const char* str = lbl_conv.Convert(clbl);
 
 		if(opt.command == options::cmd_list_cargo)
 		 std::cout << str << std::endl;
@@ -92,18 +92,18 @@ int run(const options& opt)
 		remove unwanted cargo from list
 	*/
 	{
-	std::list<comm::order_list>::iterator itr, next;
+	std::list<comm::OrderList>::iterator itr, next;
 	for(itr = next = file.order_lists.get().begin();
 		itr != file.order_lists.get().end(); itr = next)
 	{
 		++next;
 /*		bool cargo_found = false;
-		for(std::map<cargo_label_t, comm::cargo_info>::const_iterator itr2 = itr->cargo.get().begin();
+		for(std::map<CargoLabelT, comm::CargoInfo>::const_iterator itr2 = itr->cargo.get().begin();
 			!cargo_found && itr2 != itr->cargo.get().end(); ++itr2)
 		 cargo_found = (cargo_ids.find(itr2->first) != cargo_ids.end());
 		if(!cargo_found)
 		 file.order_lists.get().erase(itr);*/
-		std::map<cargo_label_t, comm::cargo_info>::const_iterator itr2,
+		std::map<CargoLabelT, comm::CargoInfo>::const_iterator itr2,
 			next2 = itr->cargo.get().begin();
 		for(itr2 = next2;
 			itr2 != itr->cargo.get().end(); itr2 = next2)
@@ -121,7 +121,7 @@ int run(const options& opt)
 		sort out subset or express trains
 	*/
 	node_list_t nl;
-	for(const comm::order_list& ol : file.order_lists.get())
+	for(const comm::OrderList& ol : file.order_lists.get())
 	 nl.init(ol);
 
 	auto next = file.order_lists.get().begin();
@@ -153,12 +153,12 @@ int run(const options& opt)
 		find out which stations are actually being used...
 	*/
 	// only set flags
-	for(std::list<comm::order_list>::const_iterator itr =
+	for(std::list<comm::OrderList>::const_iterator itr =
 		file.order_lists.get().begin();
 		itr != file.order_lists.get().end(); ++itr)
 	if(itr->stations.get().size())
 	{
-		const comm::order_list& ol = *itr;
+		const comm::OrderList& ol = *itr;
 		for(std::vector<std::pair<StationID, bool> >::const_iterator
 				itr = ol.stations.get().begin();
 				itr != ol.stations.get().end(); ++itr)
@@ -175,7 +175,7 @@ int run(const options& opt)
 		 file.stations().erase(itr);
 	}
 
-	comm::json_ofile(std::cout) << file;
+	comm::RailnetOfile(std::cout) << file;
 
 	return 0;
 }

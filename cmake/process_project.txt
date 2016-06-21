@@ -62,9 +62,13 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Wall ${WARN_EXC} -std=c++11 -pi
 set(CMAKE_CXX_FLAGS_DEBUG "-g -ggdb -O0")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
+if("${OPENTTD_DIR}" STREQUAL "")
+    message(FATAL_ERROR "Please set -DOPENTTD_DIR=/path/to/openttd-installation")
+endif()
+
 if(EXISTS "${OPENTTD_DIR}/")
 else()
-    message(FATAL_ERROR "Please set -DOPENTTD_DIR=/path/to/openttd-installation")
+    message(FATAL_ERROR "Could not find directory ${OPENTTD_DIR}")
 endif()
 
 # install paths
