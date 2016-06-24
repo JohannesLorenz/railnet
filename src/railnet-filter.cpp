@@ -93,20 +93,20 @@ int run(const options& opt)
 	*/
 	{
 	std::list<comm::OrderList>::iterator itr, next;
-	for(itr = next = file.order_lists.get().begin();
-		itr != file.order_lists.get().end(); itr = next)
+	for(itr = next = file.order_lists.Get().begin();
+		itr != file.order_lists.Get().end(); itr = next)
 	{
 		++next;
 /*		bool cargo_found = false;
-		for(std::map<CargoLabelT, comm::CargoInfo>::const_iterator itr2 = itr->cargo.get().begin();
-			!cargo_found && itr2 != itr->cargo.get().end(); ++itr2)
+		for(std::map<CargoLabelT, comm::CargoInfo>::const_iterator itr2 = itr->cargo.Get().begin();
+			!cargo_found && itr2 != itr->cargo.Get().end(); ++itr2)
 		 cargo_found = (cargo_ids.find(itr2->first) != cargo_ids.end());
 		if(!cargo_found)
-		 file.order_lists.get().erase(itr);*/
+		 file.order_lists.Get().erase(itr);*/
 		std::map<CargoLabelT, comm::CargoInfo>::const_iterator itr2,
-			next2 = itr->cargo.get().begin();
+			next2 = itr->cargo.Get().begin();
 		for(itr2 = next2;
-			itr2 != itr->cargo.get().end(); itr2 = next2)
+			itr2 != itr->cargo.Get().end(); itr2 = next2)
 		{
 			++next2;
 			if(cargo_ids.find(itr2->first) == cargo_ids.end())
@@ -120,18 +120,18 @@ int run(const options& opt)
 	/*
 		sort out subset or express trains
 	*/
-	node_list_t nl;
-	for(const comm::OrderList& ol : file.order_lists.get())
-	 nl.init(ol);
+	NodeListT nl;
+	for(const comm::OrderList& ol : file.order_lists.Get())
+	 nl.Init(ol);
 
-	auto next = file.order_lists.get().begin();
-	for(auto itr = file.order_lists.get().begin(); itr != file.order_lists.get().end(); itr = next)
+	auto next = file.order_lists.Get().begin();
+	for(auto itr = file.order_lists.Get().begin(); itr != file.order_lists.Get().end(); itr = next)
 	{
 		++next;
-		int type = nl.traverse(*itr, NULL, false, false);
+		int type = nl.Traverse(*itr, NULL, false, false);
 
-		bool is_express = type & node_list_t::is_express_train,
-			is_short = type & node_list_t::is_short_train;
+		bool is_express = type & NodeListT::IS_EXPRESS_TRAIN,
+			is_short = type & NodeListT::IS_SHORT_TRAIN;
 
 		if((is_express && opt.hide_express)||(is_short && opt.hide_short_trains))
 		{
@@ -143,7 +143,7 @@ int run(const options& opt)
 						? "express"
 						: "short")
 				<< std::endl;
-			file.order_lists.get().erase(itr);
+			file.order_lists.Get().erase(itr);
 		}
 	}
 
@@ -154,14 +154,14 @@ int run(const options& opt)
 	*/
 	// only set flags
 	for(std::list<comm::OrderList>::const_iterator itr =
-		file.order_lists.get().begin();
-		itr != file.order_lists.get().end(); ++itr)
-	if(itr->stations.get().size())
+		file.order_lists.Get().begin();
+		itr != file.order_lists.Get().end(); ++itr)
+	if(itr->stations.Get().size())
 	{
 		const comm::OrderList& ol = *itr;
 		for(std::vector<std::pair<StationID, bool> >::const_iterator
-				itr = ol.stations.get().begin();
-				itr != ol.stations.get().end(); ++itr)
+				itr = ol.stations.Get().begin();
+				itr != ol.stations.Get().end(); ++itr)
 		{
 			station_flags.insert(itr->first);
 		}

@@ -87,15 +87,15 @@ void print_stations(Itr begin, Itr end, print_direction_t pd,
 #endif
 	// (FEATURE: fix this for backward orders)
 	std::cout << "\t// order " << unit_number << " ("
-		<< stations.at(cur_stations[0].first).name.get() << " - "
-		<< stations.at(cur_stations[mid].first).name.get()
+                << stations.at(cur_stations[0].first).name.Get() << " - "
+                << stations.at(cur_stations[mid].first).name.Get()
 		<< ")" << std::endl;
 
 	for(Itr itr = begin; itr != end; ++itr)
 	{
 		std::cout
 			<< ((itr == begin) ? "\t// " : " - ")
-			<< stations.at(itr->first).name.get()
+                        << stations.at(itr->first).name.Get()
 			<< (itr->second ? "" : "(p)");
 	}
 	std::cout << std::endl;
@@ -206,14 +206,14 @@ bool draw(const options& opt)
 	*/
 	// only set flags
         for(std::list<comm::OrderList>::const_iterator itr =
-		file.order_lists.get().begin();
-		itr != file.order_lists.get().end(); ++itr)
-	if(itr->stations.get().size())
+                file.order_lists.Get().begin();
+                itr != file.order_lists.Get().end(); ++itr)
+        if(itr->stations.Get().size())
 	{
                 const comm::OrderList& ol = *itr;
 		for(std::vector<std::pair<StationID, bool> >::const_iterator
-				itr = ol.stations.get().begin();
-				itr != ol.stations.get().end(); ++itr)
+                                itr = ol.stations.Get().begin();
+                                itr != ol.stations.Get().end(); ++itr)
 		{
 			station_flags[itr->first] |= itr->second ? st_used : st_passed;
 		}
@@ -221,12 +221,12 @@ bool draw(const options& opt)
 
 	// this is required for the drawing algorithm
         for(std::list<comm::OrderList>::const_iterator itr3 =
-		file.order_lists.get().begin();
-		itr3 != file.order_lists.get().end(); ++itr3)
+                file.order_lists.Get().begin();
+                itr3 != file.order_lists.Get().end(); ++itr3)
 	{
 		// all in all, the whole for loop will not affect the order
                 comm::OrderList& ol = const_cast<comm::OrderList&>(*itr3);
-		ol.stations.get().push_back(ol.stations.get().front());
+                ol.stations.Get().push_back(ol.stations.Get().front());
 	}
 
 	/*
@@ -239,11 +239,11 @@ bool draw(const options& opt)
 		"\tedge[penwidth=2];\n";
 
 	// draw nodes if stations are used
-	for(const auto& pr : file.stations.get())
+        for(const auto& pr : file.stations.Get())
 	{
 		if(station_flags.at(pr.first) | st_used) // train stops
 			std::cout << "\t" << pr.first << " [xlabel=\""
-				<< pr.second.name.get() << "\", pos=\""
+                                << pr.second.name.Get() << "\", pos=\""
 				<< (pr.second.x * opt.stretch)
 				<< ", "
 				<< (pr.second.y * opt.stretch)
@@ -261,8 +261,8 @@ bool draw(const options& opt)
 	std::cout.precision(3);
 
 	int total_size = 0;
-	for(auto itr3 = file.order_lists.get().begin();
-		itr3 != file.order_lists.get().end(); ++itr3)
+        for(auto itr3 = file.order_lists.Get().begin();
+                itr3 != file.order_lists.Get().end(); ++itr3)
 	{
 		total_size += itr3->cargo().size();
 	}
@@ -275,9 +275,9 @@ bool draw(const options& opt)
 		draw edges
 	*/
         for(std::list<comm::OrderList>::const_iterator itr3 =
-		file.order_lists.get().begin();
-		itr3 != file.order_lists.get().end(); ++itr3)
-	if(itr3->stations.get().size())
+                file.order_lists.Get().begin();
+                itr3 != file.order_lists.Get().end(); ++itr3)
+        if(itr3->stations.Get().size())
 	{
 		bool has_fwd = false, has_bwd = false, has_double = false;
                 for(std::map<CargoLabelT, comm::CargoInfo>::const_iterator itr4 = itr3->cargo().begin();
@@ -295,7 +295,7 @@ bool draw(const options& opt)
 				std::cout << " " << +*itr2;
 		std::cout << std::endl;
 #endif
-		const auto& cur_stations = itr3->stations.get();
+                const auto& cur_stations = itr3->stations.Get();
 
 		if(has_fwd)
 		 print_stations(cur_stations.begin(), cur_stations.end(),
