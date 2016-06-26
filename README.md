@@ -28,8 +28,8 @@ Contrary to the video driver, the utilities can take parameters for
 customization.
 
 # 2 What is the project status?
-It is currently a testing-only version. The code does not yet follow any
-coding guidelines and has not been approved by the OpenTTD developers.
+It is currently a testing-only version. The code has not been approved by the
+OpenTTD developers.
 
 # 3 Installation
 ## Requirements
@@ -67,7 +67,7 @@ cd railnet/build
 cmake \
   -DCOMPILER=clang \
   -DCMAKE_BUILD_TYPE=Debug \
-  -DOPENTTD_DIR=/path/to/railnet-openttd/ \
+  -DOPENTTD_DIR=/path/to/where/you/just/installed/openttd/ \
   ..
 make
 ```
