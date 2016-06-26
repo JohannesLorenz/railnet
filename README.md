@@ -7,7 +7,7 @@ Welcome! Thank you for considering the README file.
   3. Installation
   4. Using
   5. Credits
-  6. Contact
+  6. Bug reports/Contact
 
 # 1 What is railnet?
 It is a project to export **OpenTTD route networks**, i.e. maps that depict
@@ -92,7 +92,7 @@ The author thanks:
   * The many helpful people in the OpenTTD chats/forums for helpful
     their patience and their helpful suggestions
 
-# 6 Contact
+# 6 Bug reports/Contact
 
 Feel free to give feedback. Either to the community, or directly to the
 railnet author:
@@ -102,4 +102,7 @@ printf "\x6a\x6f\x68\x61\x6e\x6e\x65\x73\x40\x6c\x6f\
 \x72\x65\x6e\x7a\x2d\x68\x6f\x2e\x6d\x65\x0a"
 ```
 
+If you'd like to post a feature request or a bug report, you can post it on
+the project's
+[github page](https://github.com/JohannesLorenz/railnet/issues/new).
 
