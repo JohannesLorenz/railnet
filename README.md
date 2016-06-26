@@ -47,7 +47,8 @@ git clone https://github.com/JohannesLorenz/OpenTTD openttd-railnet
 cd openttd-railnet
 # now, follow the usual
 # [installation instructions for OpenTTD](../../readme.txt)
-# NOTE: you must compile OpenTTD with the -std=c++11 flag
+# NOTE: you must compile OpenTTD with the -std=c++11 flag,
+#       otherwise, the railnet video driver will not be compiled
 # some possibilities:
 CXXFLAGS='-std=c++11' ./configure
 CC=clang CXX=clang++ CXXFLAGS='-std=c++11' ./configure
