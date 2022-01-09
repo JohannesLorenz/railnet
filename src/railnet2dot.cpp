@@ -86,17 +86,29 @@ void print_stations(Itr begin, Itr end, print_direction_t pd,
 	}
 #endif
 	// (FEATURE: fix this for backward orders)
+
+	const std::string midS = (stations.find(cur_stations[mid].first) == stations.end()) ? "???" : stations.at(cur_stations[mid].first).name.Get();
 	std::cout << "\t// order " << unit_number << " ("
 		<< stations.at(cur_stations[0].first).name.Get() << " - "
-		<< stations.at(cur_stations[mid].first).name.Get()
+		<< midS
 		<< ")" << std::endl;
 
 	for(Itr itr = begin; itr != end; ++itr)
 	{
-		std::cout
-			<< ((itr == begin) ? "\t// " : " - ")
-			<< stations.at(itr->first).name.Get()
-			<< (itr->second ? "" : "(p)");
+		auto station_itr = stations.find(itr->first);
+		if(station_itr == stations.end())
+		{
+			std::cerr << "Warning: Order list " << unit_number
+				<< " references invalid station " << itr->first
+				<< " (station info " << itr->second << ")" << std::endl;
+		}
+		else
+		{
+			std::cout
+				<< ((itr == begin) ? "\t// " : " - ")
+				<< stations.at(itr->first).name.Get()
+				<< (itr->second ? "" : "(p)");
+		}
 	}
 	std::cout << std::endl;
 
@@ -113,7 +125,7 @@ void print_stations(Itr begin, Itr end, print_direction_t pd,
 		{
 			std::cout << ", label=\"";
 			bool first = true;
-			for(const std::pair<const CargoLabel, comm::CargoInfo>& id : cargo)
+			for(const std::pair<const CargoLabelT, comm::CargoInfo>& id : cargo)
 			if(((id.second.fwd && !id.second.rev) && (pd == pdt_fwd)) ||
 				((!id.second.fwd && id.second.rev) && (pd == pdt_bwd)) ||
 				((id.second.fwd && id.second.rev) && (pd == pdt_both)) )
@@ -183,7 +195,7 @@ void print_stations(Itr begin, Itr end, print_direction_t pd,
 		if(stations.find(itr->first) == stations.end())
 		{
 			std::cerr << "Could not find station id " << itr->first << std::endl;
-			throw std::runtime_error("invalid station id in order list");
+	//		throw std::runtime_error("invalid station id in order list");
 		}
 
 		last_edge_type = edge_type;
@@ -226,6 +238,8 @@ bool draw(const options& opt)
 	{
 		// all in all, the whole for loop will not affect the order
 		comm::OrderList& ol = const_cast<comm::OrderList&>(*itr3);
+		if(ol.stations.Get().size() == 0)
+			throw std::runtime_error("empty order-list?");
 		ol.stations.Get().push_back(ol.stations.Get().front());
 	}
 
