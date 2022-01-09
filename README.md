@@ -43,17 +43,16 @@ OpenTTD developers.
 First, we compile OpenTTD with video driver support.
 
 ```sh
-git clone https://github.com/JohannesLorenz/OpenTTD openttd-railnet
+git clone https://github.com/JohannesLorenz/OpenTTD -b railnet openttd-railnet
 cd openttd-railnet
 # now, follow the usual
-# [installation instructions for OpenTTD](../../readme.txt)
-# NOTE: you must compile OpenTTD with the -std=c++11 flag,
+# installation instructions for OpenTTD.
+# NOTE: you must compile OpenTTD with the C++11 or higher,
 #       otherwise, the railnet video driver will not be compiled
-# some possibilities:
-CXXFLAGS='-std=c++11' ./configure
-CC=clang CXX=clang++ CXXFLAGS='-std=c++11' ./configure
-  --prefix=/where/you/want/to/install/it \
-  --enable-debug=3
+mkdir build
+cd build
+cmake ..
+make
 # then, do an installation or make a bundle...
 make install
 ```
@@ -67,7 +66,7 @@ cd railnet/build
 cmake \
   -DCOMPILER=clang \
   -DCMAKE_BUILD_TYPE=Debug \
-  -DOPENTTD_DIR=/path/to/where/you/just/installed/openttd/ \
+  -DOPENTTD_DIR=/path/to/where/you/just/cloned/openttd/ \
   ..
 make
 ```
@@ -76,15 +75,15 @@ make
 If you want to do it step by step:
 ```sh
 /where/you/installed/openttd -g your_savegame.sav -v railnet \
-  > map.dat 2>/dev/null
-cat map.json | ./railnet-filter > map2.json 2>/dev/null
+  > map.json 2>/dev/null
+cat map.json | ./railnet-filter -c PASS > map2.json 2>/dev/null
 cat map2.json | ./railnet2dot > map2.dot 2>/dev/null
 cat map.dot | dot -Kneato -Tpdf > map.pdf
 ```
 Otherwise, you can also use pipes:
 ```sh
 /where/you/installed/openttd -g your_savegame.sav -v railnet \
-  | ./railnet-filter | ./railnet2dot | dot -Kneato -Tpdf > map.pdf
+  | ./railnet-filter -c PASS | ./railnet2dot | dot -Kneato -Tpdf > map.pdf
 ```
 
 # 5 Credits
