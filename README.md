@@ -72,6 +72,21 @@ make
 ```
 
 # 4 Using
+
+## Preparation
+
+Start by going into the `build/src` directory:
+```sh
+cd build/src
+```
+
+Before the 1st time, you need to create a link to the language files there:
+```
+ln -s /where/you/installed/openttd/share/games/openttd/lang/ lang
+```
+
+## Running
+
 If you want to do it step by step:
 ```sh
 /where/you/installed/openttd -g your_savegame.sav -v railnet \
@@ -80,6 +95,7 @@ cat map.json | ./railnet-filter -c PASS > map2.json 2>/dev/null
 cat map2.json | ./railnet2dot > map2.dot 2>/dev/null
 cat map.dot | dot -Kneato -Tpdf > map.pdf
 ```
+
 Otherwise, you can also use pipes:
 ```sh
 /where/you/installed/openttd -g your_savegame.sav -v railnet \
