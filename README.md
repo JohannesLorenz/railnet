@@ -1,6 +1,8 @@
 # Greetings
 Welcome! Thank you for considering the README file.
 
+![An example image](data/example.pdf "Example output")
+
 **Contents**
   1. What is railnet?
   2. What is the project status?
