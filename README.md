@@ -1,7 +1,7 @@
 # Greetings
 Welcome! Thank you for considering the README file.
 
-![An example image](data/example.pdf "Example output")
+![An example image](data/example.png "Example output")
 
 **Contents**
   1. What is railnet?
